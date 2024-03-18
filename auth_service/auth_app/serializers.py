@@ -34,3 +34,32 @@ class CustomUserSerializer(serializers.ModelSerializer):
         validated_data.pop("password_confirmation", None)
         validated_data["password"] = make_password(validated_data.get("password"))
         return super(CustomUserSerializer, self).create(validated_data)
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(
+        label="Password",
+        style={"input_type": "password"},
+        trim_whitespace=False,
+    )
+
+    def validate(self, data):
+        email = data.get("email", "")
+        password = data.get("password", "")
+
+        if email and password:
+            user = authenticate(email=email, password=password)
+            if user:
+                if not user.is_active:
+                    msg = "User account is disabled."
+                    raise serializers.ValidationError(msg)
+            else:
+                msg = "Unable to log in with provided credentials."
+                raise serializers.ValidationError(msg)
+        else:
+            msg = "Must include 'email' and 'password'."
+            raise serializers.ValidationError(msg)
+
+        data["user"] = user
+        return data
