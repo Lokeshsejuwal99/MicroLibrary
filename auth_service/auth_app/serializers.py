@@ -61,5 +61,14 @@ class LoginSerializer(serializers.Serializer):
             msg = "Must include 'email' and 'password'."
             raise serializers.ValidationError(msg)
 
-        data["user"] = user
-        return data
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        response = {
+            "access_token": access_token,
+            "refresh_token": str(refresh),
+            "user_id": user.id,
+            "email": user.email,
+        }
+        print(response)
+
+        return response
