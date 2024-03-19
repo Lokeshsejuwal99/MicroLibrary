@@ -19,6 +19,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "password_confirmation",
             "is_active",
             "is_staff",
+            "twofa_enabled",
         )
 
     def validate(self, data):
@@ -63,10 +64,12 @@ class LoginSerializer(serializers.Serializer):
 
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
+        print(user.twofa_enabled)
         response = {
             "access_token": access_token,
             "refresh_token": str(refresh),
             "user_id": user.id,
+            "2fa": user.twofa_enabled,
             "email": user.email,
         }
         print(response)
