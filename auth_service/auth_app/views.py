@@ -40,6 +40,7 @@ class LoginView(TokenObtainPairView):
 
             access_token = serializer.validated_data["access_token"]
             refresh_token = serializer.validated_data["refresh_token"]
+            mfa = serializer.validated_data["2fa"]
 
             # Set cookies for access and refresh tokens
             response = Response(
@@ -49,6 +50,7 @@ class LoginView(TokenObtainPairView):
                     "data": {
                         "access_token": access_token,
                         "refresh_token": refresh_token,
+                        "2fa": mfa,
                     },
                 },
                 status=status.HTTP_201_CREATED,
