@@ -22,7 +22,7 @@ def handle_otp_email(sender, recevier, otp, **kwargs):
     sender_email = "your_email@example.com"
     receiver_email = recevier
     subject = "2FA Code"
-    message = "Your 2FA code is: {otp}"
+    message = f"Your 2FA code is: {otp}"
 
     msg = MIMEMultipart()
     msg["From"] = sender_email
