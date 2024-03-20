@@ -1,9 +1,12 @@
-from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
+
+from rest_framework import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+
 from .models import CustomUser
+from .utlis import *
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -64,7 +67,8 @@ class LoginSerializer(serializers.Serializer):
 
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
-        print(user.twofa_enabled)
+        if user.twofa_enabled:
+            data["2fa"] = True
         response = {
             "access_token": access_token,
             "refresh_token": str(refresh),

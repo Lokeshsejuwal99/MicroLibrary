@@ -30,6 +30,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50)
     recovery_code = models.CharField(max_length=255, blank=True, null=True)
     twofa_enabled = models.BooleanField(default=False)
+    otp = models.CharField(max_length=6, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     objects = CustomUserManager()
