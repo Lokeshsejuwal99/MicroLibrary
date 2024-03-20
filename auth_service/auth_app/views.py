@@ -37,9 +37,6 @@ class LoginView(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
             if serializer.validated_data["2fa"] == True:
                 print("Sending 2FA code to user")
-                send_mail.send(
-                    sender=CustomUser, recevier=serializer.validated_data["email"]
-                )
 
             access_token = serializer.validated_data["access_token"]
             refresh_token = serializer.validated_data["refresh_token"]

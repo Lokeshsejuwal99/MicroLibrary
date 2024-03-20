@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 from .models import CustomUser
 from .utlis import *
+from .signals import send_mail
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -68,7 +69,10 @@ class LoginSerializer(serializers.Serializer):
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
         if user.twofa_enabled:
-            data["2fa"] = True
+            otp = generate_otp()
+            print(f"Generated OTP: {otp}")
+            send_mail.send(sender=CustomUser, recevier=email, otp=otp)
+
         response = {
             "access_token": access_token,
             "refresh_token": str(refresh),

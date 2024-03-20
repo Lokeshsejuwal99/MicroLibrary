@@ -11,7 +11,7 @@ send_mail = Signal()
 
 
 @receiver(send_mail)
-def handle_otp_email(sender, recevier, **kwargs):
+def handle_otp_email(sender, recevier, otp, **kwargs):
     # Set up SMTP connection
     EMAIL_HOST = config("EMAIL_HOST")
     EMAIL_HOST_USER = config("EMAIL_HOST_USER")
@@ -22,7 +22,7 @@ def handle_otp_email(sender, recevier, **kwargs):
     sender_email = "your_email@example.com"
     receiver_email = recevier
     subject = "2FA Code"
-    message = "Your 2FA code is: 123456"  # Replace with actual 2FA code
+    message = "Your 2FA code is: {otp}"
 
     msg = MIMEMultipart()
     msg["From"] = sender_email
