@@ -44,16 +44,20 @@ class BookDetailView(RetrieveUpdateDestroyAPIView):
     # lookup_field = "id"
 
     def retrieve(self, request, user_id, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(
-            {
-                "success": True,
-                "message": "Books retrieved successfully",
-                "data": serializer.data,
-            },
-            status=status.HTTP_200_OK,
-        )
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            return Response(
+                {
+                    "success": True,
+                    "message": "Books retrieved successfully",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        except Exception as e:
+            data = {"success": False, "message": str(e)}
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def update(self, request, user_id, *args, **kwargs):
         try:
