@@ -66,8 +66,8 @@ class LoginSerializer(serializers.Serializer):
             msg = "Must include 'email' and 'password'."
             raise serializers.ValidationError(msg)
 
-        refresh = RefreshToken.for_user(user)
-        access_token = str(refresh.access_token)
+        access_token, refresh_token = generate_tokens(user)
+
         if user.twofa_enabled:
             otp = generate_otp()
             print(f"Generated OTP: {otp}")
@@ -78,7 +78,7 @@ class LoginSerializer(serializers.Serializer):
 
         response = {
             "access_token": access_token,
-            "refresh_token": str(refresh),
+            "refresh_token": refresh_token,
             "user_id": user.id,
             "2fa": user.twofa_enabled,
             "email": user.email,
