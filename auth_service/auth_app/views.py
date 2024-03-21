@@ -9,6 +9,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from decouple import config
 from .signals import send_mail
+from .utlis import *
 
 
 class RegisterView(APIView):
@@ -81,3 +82,39 @@ class LoginView(TokenObtainPairView):
         response.set_cookie("refresh_token", refresh_token, httponly=True)
 
         return response
+
+
+class VerifyOTPView(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+        otp = request.data.get("otp")
+
+        user = CustomUser.objects.filter(email=email).first()
+
+        if user.otp == otp:
+            user.otp = None
+            user.save()
+
+            access_token, refresh_token = generate_tokens(user)
+
+            response = Response(
+                {
+                    "success": True,
+                    "message": "User Logged in successfully",
+                    "data": {
+                        "access_token": access_token,
+                        "refresh_token": refresh_token,
+                    },
+                },
+                status=status.HTTP_201_CREATED,
+            )
+
+            response.set_cookie("access_token", access_token, httponly=True)
+            response.set_cookie("refresh_token", refresh_token, httponly=True)
+
+            return response
+
+        return Response(
+            {"success": False, "message": "Invalid OTP"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )

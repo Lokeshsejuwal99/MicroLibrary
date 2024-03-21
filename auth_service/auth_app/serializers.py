@@ -86,3 +86,32 @@ class LoginSerializer(serializers.Serializer):
         print(response)
 
         return response
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    otp = serializers.CharField(max_length=6, min_length=6)
+    email = serializers.EmailField()
+
+    def validate(self, data):
+        otp = data.get("otp")
+        email = data.get("email")
+
+        if not otp:
+            raise serializers.ValidationError("Must include 'otp'.")
+
+        user = CustomUser.objects.filter(email=email).first()
+
+        if not user:
+            raise serializers.ValidationError("Invalid OTP.")
+
+        access_token, refresh_token = generate_tokens(user)
+
+        response = {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "user_id": user.id,
+            "2fa": user.twofa_enabled,
+            "email": user.email,
+        }
+
+        return response
