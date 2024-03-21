@@ -76,3 +76,13 @@ class BookDetailView(RetrieveUpdateDestroyAPIView):
         except Exception as e:
             data = {"success": False, "message": str(e)}
             return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def destroy(self, request, user_id, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.delete()
+            data = {"success": True, "message": "Expense deleted successfully"}
+            return Response(data, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            data = {"success": False, "message": str(e)}
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
