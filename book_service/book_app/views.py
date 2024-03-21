@@ -49,7 +49,7 @@ class BookDetailView(RetrieveUpdateDestroyAPIView):
         return Response(
             {
                 "success": True,
-                "message": "Expense retrieved successfully",
+                "message": "Books retrieved successfully",
                 "data": serializer.data,
             },
             status=status.HTTP_200_OK,
@@ -68,7 +68,7 @@ class BookDetailView(RetrieveUpdateDestroyAPIView):
             return Response(
                 {
                     "success": True,
-                    "message": "Expense Updated successfully",
+                    "message": "Book Updated successfully",
                     "data": serializer.data,
                 },
                 status=status.HTTP_200_OK,
@@ -81,7 +81,7 @@ class BookDetailView(RetrieveUpdateDestroyAPIView):
         try:
             instance = self.get_object()
             instance.delete()
-            data = {"success": True, "message": "Expense deleted successfully"}
+            data = {"success": True, "message": "Book deleted successfully"}
             return Response(data, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             data = {"success": False, "message": str(e)}
