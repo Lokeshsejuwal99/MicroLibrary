@@ -82,6 +82,7 @@ class LoginSerializer(serializers.Serializer):
             "user_id": user.id,
             "2fa": user.twofa_enabled,
             "email": user.email,
+            "otp": otp,
         }
         print(response)
 

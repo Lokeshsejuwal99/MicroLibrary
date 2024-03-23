@@ -5,6 +5,7 @@ from .serializers import CustomUserSerializer, LoginSerializer
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 import smtplib
+
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from decouple import config
@@ -40,10 +41,12 @@ class LoginView(TokenObtainPairView):
             access_token = serializer.validated_data["access_token"]
             refresh_token = serializer.validated_data["refresh_token"]
             mfa = serializer.validated_data["2fa"]
+            email = serializer.validated_data["email"]
+            otp = serializer.validated_data["otp"]
 
             if mfa:
                 # 2FA is enabled, return message about OTP verification
-                return self.get_2fa_response(mfa)
+                return self.get_2fa_response(mfa, email, otp)
             else:
                 # Set cookies only if 2FA is not enabled
                 return self.get_cookie_response(access_token, refresh_token, mfa)
@@ -54,7 +57,9 @@ class LoginView(TokenObtainPairView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-    def get_2fa_response(self, mfa):
+    def get_2fa_response(self, mfa, email, otp):
+        print(f"mfa: {mfa} otp: {otp} email: {email}")
+        send_mail.send(recevier=email, otp=otp)  # add task to send email
         return Response(
             {
                 "success": True,
