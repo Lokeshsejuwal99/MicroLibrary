@@ -1,5 +1,6 @@
 import random
 import string
+from hashlib import sha256
 
 from django.db import models
 from django.contrib.auth.models import (
@@ -47,5 +48,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             recovery_code = "".join(
                 random.choices(string.ascii_letters + string.digits, k=12)
             )
-            self.recovery_code = recovery_code
+            hashed_code = sha256(recovery_code.encode()).hexdigest()
+            self.recovery_code = hashed_code
         super().save(*args, **kwargs)
