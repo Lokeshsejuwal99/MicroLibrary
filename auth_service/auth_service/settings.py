@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
-    "auth_app"
+    "auth_app",
 ]
 
 MIDDLEWARE = [
@@ -72,6 +72,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "auth_service.wsgi.application"
 
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
