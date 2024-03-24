@@ -3,7 +3,7 @@ import json
 from decouple import config
 
 
-def publishBook(book):
+def BookProducer(book):
     connection = pika.BlockingConnection(pika.ConnectionParameters(config("RABBITMQ")))
     channel = connection.channel()
 

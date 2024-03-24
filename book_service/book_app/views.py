@@ -38,6 +38,16 @@ class BooksView(APIView):
         )
 
 
+class BorrowBookView(APIView):
+
+    def post(self, request):
+
+        return Response(
+            {"success": True, "error": "serializer.errors"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
 class BookDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
