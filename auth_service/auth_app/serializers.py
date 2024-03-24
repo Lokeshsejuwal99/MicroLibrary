@@ -71,7 +71,6 @@ class LoginSerializer(serializers.Serializer):
         if user.twofa_enabled:
             otp = generate_otp()
             print(f"Generated OTP: {otp}")
-            send_mail.send(sender=CustomUser, recevier=email, otp=otp)
             user_profile = CustomUser.objects.get(email=email)
             user_profile.otp = otp
             user_profile.save()
