@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from decouple import config
 from .signals import send_mail
 from .utlis import *
+from .tasks import send_otp_email
 
 
 class RegisterView(APIView):
@@ -58,8 +59,7 @@ class LoginView(TokenObtainPairView):
             )
 
     def get_2fa_response(self, mfa, email, otp):
-        print(f"mfa: {mfa} otp: {otp} email: {email}")
-        send_mail.send(recevier=email, otp=otp)  # add task to send email
+        send_otp_email.delay(email, otp)
         return Response(
             {
                 "success": True,
