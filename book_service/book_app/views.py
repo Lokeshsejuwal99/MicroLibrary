@@ -6,6 +6,8 @@ from .models import Books
 from .serializers import BooksSerializer
 from rest_framework import status
 
+from .bookProducer import BookProducer
+
 
 class BooksView(APIView):
     def get(self, request):
@@ -41,7 +43,9 @@ class BooksView(APIView):
 class BorrowBookView(APIView):
 
     def post(self, request):
+        print(request.data)
 
+        BookProducer(request.data)
         return Response(
             {"success": True, "error": "serializer.errors"},
             status=status.HTTP_400_BAD_REQUEST,

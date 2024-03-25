@@ -36,3 +36,5 @@ flower -A proj_name
 ```bash
 celery -A proj_name worker -l info --pool=solo
 ```
+
+
