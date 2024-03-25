@@ -19,7 +19,7 @@ django.setup()
 #import models here
 
 # RabbitMQ details
-RabbitMQ = ""
+RabbitMQ = config("RabbitMQ")
 params = pika.URLParameters(RabbitMQ)
 
 # Establish connection to CloudAMQP
