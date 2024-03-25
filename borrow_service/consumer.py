@@ -27,13 +27,17 @@ channel = connection.channel()
 
 def declare_queue(exchange_name, queue_name):
     channel.exchange_declare(exchange=exchange_name, exchange_type="fanout")
-    result = channel.queue_declare(queue=queue_name, exclusive=True)
+    result = channel.queue_declare(queue=queue_name)
     queue_name = result.method.queue
     channel.queue_bind(exchange=exchange_name, queue=queue_name)
 
 
 def base_consumer(channel, method, properties, body):
-    print(body)
+    message = json.loads(body)
+    # Process the message as needed
+    print("Received message:", message)
+
+    # channel.basic_ack(delivery_tag=method.delivery_tag)
 
 
 # Declare and bind queues
