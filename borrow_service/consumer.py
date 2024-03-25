@@ -50,7 +50,6 @@ def borrow_consumer(channel, method, properties, body):
         return_date=message["return_date"],
     )
 
-    print(save)
     if save:
         print("Borrow saved successfully")
     # channel.basic_ack(delivery_tag=method.delivery_tag)
