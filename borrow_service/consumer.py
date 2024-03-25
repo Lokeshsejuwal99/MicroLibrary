@@ -41,9 +41,9 @@ def base_consumer(channel, method, properties, body):
 
 
 # Declare and bind queues 
-# declare_queue('role_to_org', 'role-org')
+declare_queue(exchange_name, queue_name)
 
-# channel.basic_consume(queue='invited-user', on_message_callback=InvitedUserConsume, auto_ack=True)
+channel.basic_consume(queue=queue_name, on_message_callback= base_consumer, auto_ack=True)
 
 print("Started Consuming...")
 channel.start_consuming()
