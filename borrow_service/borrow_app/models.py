@@ -12,5 +12,5 @@ class Borrow(models.Model):
     returned = models.BooleanField(default=False)
     return_date = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
-        return self.book_id + self.user_id
+    # def __str__(self):
+    #     return self.borrow_date
