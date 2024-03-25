@@ -9,10 +9,15 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+import sys
+
+sys.path.append(str(BASE_DIR / "borrow_service"))
+
 path.append(BASE_DIR / "borrow_service/settings.py")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "borrow_service.settings")
 django.setup()
 
+from borrow_app.models import Borrow
 
 # import models here
 
@@ -32,11 +37,22 @@ def declare_queue(exchange_name, queue_name):
     channel.queue_bind(exchange=exchange_name, queue=queue_name)
 
 
-def base_consumer(channel, method, properties, body):
+def borrow_consumer(channel, method, properties, body):
     message = json.loads(body)
     # Process the message as needed
     print("Received message:", message)
+    save = Borrow.objects.create(
+        user_id=message["user_id"],
+        book_id=message["book_id"],
+        borrow_date=message["borrow_date"],
+        due_date=message["due_date"],
+        returned=message["returned"],
+        return_date=message["return_date"],
+    )
 
+    print(save)
+    if save:
+        print("Borrow saved successfully")
     # channel.basic_ack(delivery_tag=method.delivery_tag)
 
 
@@ -44,7 +60,7 @@ def base_consumer(channel, method, properties, body):
 declare_queue("borrow_exchange", "borrow_queue")
 
 channel.basic_consume(
-    queue="borrow_queue", on_message_callback=base_consumer, auto_ack=True
+    queue="borrow_queue", on_message_callback=borrow_consumer, auto_ack=True
 )
 
 print("Started Consuming...")
