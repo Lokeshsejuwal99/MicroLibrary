@@ -5,9 +5,9 @@ from rest_framework import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
-from .models import CustomUser
-from .utlis import *
-from .signals import send_mail
+from auth_app.models import CustomUser
+from auth_app.utlis import *
+from auth_app.signals import send_mail
 
 
 class CustomUserSerializer(serializers.ModelSerializer):

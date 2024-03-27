@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import CustomUser
 from .serializers import CustomUserSerializer, LoginSerializer
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -9,9 +8,11 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from decouple import config
-from .signals import send_mail
-from .utlis import *
-from .tasks import send_otp_email
+
+from auth_app.tasks import send_otp_email
+from auth_app.models import CustomUser
+from auth_app.utlis import *
+from auth_app.signals import send_mail
 
 
 class RegisterView(APIView):
