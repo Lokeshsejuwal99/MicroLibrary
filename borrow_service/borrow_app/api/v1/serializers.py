@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Borrow
+from borrow_app.models import Borrow
 
 
 class BorrowSerializer(serializers.ModelSerializer):

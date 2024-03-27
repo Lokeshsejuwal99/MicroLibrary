@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from rest_framework.response import Response
-from .models import Books
-from .serializers import BooksSerializer
+from borrow_app.models import Borrow
+from .serializers import BorrowSerializer
 from rest_framework import status
 
 
