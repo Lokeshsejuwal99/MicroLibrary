@@ -2,11 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from rest_framework.response import Response
-from .models import Books
+from book_app.models import Books
 from .serializers import BooksSerializer
 from rest_framework import status
 
-from .bookProducer import BookProducer
+# from .bookProducer import BookProducer
 
 
 class BooksView(APIView):
