@@ -52,9 +52,18 @@ class BooksView(ModelViewSet):
             {
                 "success": True,
                 "message": "Book created successfully",
-                "data": data,
             },
             status=status.HTTP_201_CREATED,
+        )
+
+    def put(self, request, *args, **kwargs):
+        data = BookRepository.update(self, request, *args, **kwargs)
+        return Response(
+            {
+                "success": True,
+                "message": "Book updated successfully",
+            },
+            status=status.HTTP_200_OK,
         )
 
 
