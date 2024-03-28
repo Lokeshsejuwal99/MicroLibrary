@@ -1,42 +1,60 @@
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+
+from rest_framework import status
 from book_app.models import Books
 from .serializers import BooksSerializer
-from rest_framework import status
 
 # from .bookProducer import BookProducer
+from .repository import BookRepository
 
 
-class BooksView(APIView):
-    def get(self, request):
-        books = Books.objects.all()
-        serializer = BooksSerializer(books, many=True)
+# class BooksView(APIView):
+#     def get(self, request):
+#         books = Books.objects.all()
+#         serializer = BooksSerializer(books, many=True)
+#         return Response(
+#             {
+#                 "success": True,
+#                 "message": "Books fetched successfully",
+#                 "data": serializer.data,
+#             },
+#             status=status.HTTP_200_OK,
+#         )
+
+#     def post(self, request):
+#         serializer = BooksSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(
+#                 {
+#                     "success": True,
+#                     "message": "Book created successfully",
+#                     "data": serializer.data,
+#                 },
+#                 status=status.HTTP_201_CREATED,
+#             )
+#         return Response(
+#             {"success": False, "error": serializer.errors},
+#             status=status.HTTP_400_BAD_REQUEST,
+#         )
+
+
+class BooksView(ModelViewSet):
+    queryset = Books.objects.all()
+    serializer_class = BooksSerializer
+
+    def create(self, request, *args, **kwargs):
+        data = BookRepository.create(self.serializer_class, request.data)
         return Response(
             {
                 "success": True,
-                "message": "Books fetched successfully",
-                "data": serializer.data,
+                "message": "Book created successfully",
+                "data": data,
             },
-            status=status.HTTP_200_OK,
-        )
-
-    def post(self, request):
-        serializer = BooksSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "success": True,
-                    "message": "Book created successfully",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(
-            {"success": False, "error": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_201_CREATED,
         )
 
 
