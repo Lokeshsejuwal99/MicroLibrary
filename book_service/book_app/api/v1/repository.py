@@ -12,3 +12,8 @@ class BookRepository:
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer.data
+
+    def delete_book(self, book_id):
+        instance = self.get_object()
+        instance.delete()
+        return True
