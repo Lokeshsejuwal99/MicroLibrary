@@ -11,16 +11,23 @@ from rest_framework import status
 
 # Create your views here.
 class BorrowBookView(ModelViewSet):
-    queryset = Borrow.objects.all()
-    serializer_class = BorrowSerializer
-
     def create(self, request, *args, **kwargs):
-        data = BorrowRepository.create(self.serializer_class, request.data)
-        return Response(
-            {
-                "success": True,
-                "message": "Book Borrowed successfully",
-                "data": data,
-            },
-            status=status.HTTP_201_CREATED,
-        )
+        try:
+            data = BorrowRepository.create(self.serializer_class, request.data)
+            return Response(
+                {
+                    "success": True,
+                    "message": "Book Borrowed successfully",
+                    "data": data,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Error Borrowing book",
+                    "error": str(e),  # Include the error message in the response
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
