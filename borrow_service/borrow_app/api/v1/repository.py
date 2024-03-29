@@ -5,3 +5,15 @@ class BorrowRepository:
         serializer_instance.is_valid(raise_exception=True)
         serializer_instance.save()
         return serializer_instance.data
+
+    @classmethod
+    def update(cls, instance, data):
+        serializer_instance = instance.get_serializer(instance, data=data, partial=True)
+        serializer_instance.is_valid(raise_exception=True)
+        serializer_instance.save()
+        return serializer_instance.data
+
+    @classmethod
+    def delete_borrowed(cls, instance):
+        instance.delete()
+        return True
