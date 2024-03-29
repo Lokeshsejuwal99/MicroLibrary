@@ -12,6 +12,10 @@ from .repository import BookRepository
 
 
 class BooksView(ModelViewSet):
+    """
+    View for handling book operations.
+    """
+
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
 

@@ -11,6 +11,10 @@ from rest_framework import status
 
 # Create your views here.
 class BorrowBookView(ModelViewSet):
+    """
+    View for handling book borrowing operations.
+    """
+
     def create(self, request, *args, **kwargs):
         try:
             data = BorrowRepository.create(self.serializer_class, request.data)
