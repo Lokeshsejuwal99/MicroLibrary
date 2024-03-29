@@ -21,22 +21,26 @@ class BooksView(ModelViewSet):
             {
                 "success": True,
                 "message": "Book created successfully",
+                "data": data,  # Include serialized data of the created instance in the response
             },
             status=status.HTTP_201_CREATED,
         )
 
-    def put(self, request, *args, **kwargs):
-        data = BookRepository.update(self, request, *args, **kwargs)
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = BookRepository.update(instance, request.data)
         return Response(
             {
                 "success": True,
                 "message": "Book updated successfully",
+                "data": data,  #
             },
             status=status.HTTP_200_OK,
         )
 
-    def delete(self, request, book_id):
-        BookRepository.delete_book(self, book_id)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        BookRepository.delete_book(instance)
         return Response(
             {
                 "success": True,

@@ -1,19 +1,19 @@
 class BookRepository:
     @classmethod
     def create(cls, serializer, data):
-        serializer = serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return serializer.data
+        serializer_instance = serializer(data=data)
+        serializer_instance.is_valid(raise_exception=True)
+        serializer_instance.save()
+        return serializer_instance.data
 
-    def update(self, request, user_id, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return serializer.data
+    @classmethod
+    def update(cls, instance, data):
+        serializer_instance = instance.get_serializer(instance, data=data, partial=True)
+        serializer_instance.is_valid(raise_exception=True)
+        serializer_instance.save()
+        return serializer_instance.data
 
-    def delete_book(self, book_id):
-        instance = self.get_object()
+    @classmethod
+    def delete_book(cls, instance):
         instance.delete()
         return True
