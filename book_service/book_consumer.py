@@ -40,8 +40,11 @@ def borrow_consumer(channel, method, properties, body):
     book_id = message.get("book_id")  # Get the book_id from the message
     if book_id is not None:
         book = get_object_or_404(Books, id=book_id)  # Retrieve the Book object
+        if book.quantity > 0:
+            book.quantity -= 1
+            book.save()
         print("Received message:", message)
-        print("Book:", book)
+        print("Book:", book.title, "quantity updated to:", book.quantity)
     else:
         print("Missing book_id in message:", message)
 
