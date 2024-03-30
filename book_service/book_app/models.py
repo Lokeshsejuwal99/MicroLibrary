@@ -9,6 +9,7 @@ class Books(models.Model):
     isbn = models.CharField(max_length=13)
     pages = models.IntegerField()
     cover = models.TextField()
+    quantity = models.PositiveIntegerField()
 
     def __str__(self):
         return self.title

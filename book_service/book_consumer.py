@@ -37,13 +37,13 @@ def declare_queue(exchange_name, queue_name):
 def borrow_consumer(channel, method, properties, body):
     message = json.loads(body)
     print("Received message:", message)
-    # book_id = message.get("book_id")  # Get the book_id from the message
-    # if book_id is not None:
-    #     book = get_object_or_404(Books, id=book_id)  # Retrieve the Book object
-    #     print("Received message:", message)
-    #     print("Book:", book)
-    # else:
-    #     print("Missing book_id in message:", message)
+    book_id = message.get("book_id")  # Get the book_id from the message
+    if book_id is not None:
+        book = get_object_or_404(Books, id=book_id)  # Retrieve the Book object
+        print("Received message:", message)
+        print("Book:", book)
+    else:
+        print("Missing book_id in message:", message)
 
 
 # Declare and bind queues
