@@ -19,6 +19,3 @@ def BookProducer(book):
     print(f" [x] Book request published: {book}")
 
     connection.close()
-
-
-# Call the function with your book data
