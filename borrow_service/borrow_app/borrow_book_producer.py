@@ -12,7 +12,7 @@ def BookProducer(book):
     channel.basic_publish(
         exchange="borrow_book_exchange",
         routing_key="borrow_book_queue",
-        body=json.dumps(book),
+        body=json.dumps({"book_id": book}),
     )
     print(f" [x] Book request published: {book}")
     connection.close()

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from borrow_app.models import Borrow
-from borrow_app.book_producer import BookProducer
+from borrow_app.borrow_book_producer import BookProducer
 from .repository import BorrowRepository
 from .serializers import BorrowSerializer
 

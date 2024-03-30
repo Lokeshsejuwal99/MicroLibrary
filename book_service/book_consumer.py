@@ -11,13 +11,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 import sys
 
-sys.path.append(str(BASE_DIR / "borrow_service"))
+sys.path.append(str(BASE_DIR / "book_service"))
 
-path.append(BASE_DIR / "borrow_service/settings.py")
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "borrow_service.settings")
+path.append(BASE_DIR / "book_service/settings.py")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "book_service.settings")
 django.setup()
 
-# from borrow_app.models import Borrow
+from book_app.models import Books
+from django.shortcuts import get_object_or_404
 
 
 RabbitMQ = config("RABBITMQ")
@@ -36,6 +37,13 @@ def declare_queue(exchange_name, queue_name):
 def borrow_consumer(channel, method, properties, body):
     message = json.loads(body)
     print("Received message:", message)
+    # book_id = message.get("book_id")  # Get the book_id from the message
+    # if book_id is not None:
+    #     book = get_object_or_404(Books, id=book_id)  # Retrieve the Book object
+    #     print("Received message:", message)
+    #     print("Book:", book)
+    # else:
+    #     print("Missing book_id in message:", message)
 
 
 # Declare and bind queues
