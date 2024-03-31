@@ -17,7 +17,7 @@ path.append(BASE_DIR / "borrow_service/settings.py")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "borrow_service.settings")
 django.setup()
 
-from borrow_app.models import Borrow
+from borrow_app.models import Borrow, Books
 
 # import models here
 
@@ -55,12 +55,35 @@ def borrow_consumer(channel, method, properties, body):
     # channel.basic_ack(delivery_tag=method.delivery_tag)
 
 
+def book_consumer(channel, method, properties, body):
+    message = json.loads(body)
+    # Process the message as needed
+    print("Received message receive BOOK :", message)
+    save = Books.objects.create(
+        title=message["title"],
+        author=message["author"],
+        summary=message["summary"],
+        publication_date=message["publication_date"],
+        isbn=message["isbn"],
+        pages=message["pages"],
+        cover=message["cover"],
+        quantity=message["quantity"],
+    )
+
+    if save:
+        print("Book saved successfully")
+
+
 # Declare and bind queues
 declare_queue("borrow_exchange", "borrow_queue")
+declare_queue("book_exchange", "book_queue")
 
 channel.basic_consume(
     queue="borrow_queue", on_message_callback=borrow_consumer, auto_ack=True
 )
+channel.basic_consume(
+    queue="book_queue", on_message_callback=book_consumer, auto_ack=True
+)
 
-print("Started Consuming...")
+print(" Consuming...")
 channel.start_consuming()

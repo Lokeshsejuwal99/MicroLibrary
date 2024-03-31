@@ -11,10 +11,10 @@ def BookProducer(book):
     connection = pika.BlockingConnection(pika.URLParameters(amqp_url))
     channel = connection.channel()
 
-    channel.queue_declare(queue="borrow_queue")
+    channel.queue_declare(queue="book_queue")
 
     channel.basic_publish(
-        exchange="borrow_exchange", routing_key="borrow_queue", body=json.dumps(book)
+        exchange="book_exchange", routing_key="book_queue", body=json.dumps(book)
     )
 
     print(f" [x] Book request published: {book}")
