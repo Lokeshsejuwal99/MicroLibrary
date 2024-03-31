@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Books(models.Model):
@@ -13,3 +15,9 @@ class Books(models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=Books)
+def book_action(sender, instance, created, **kwargs):
+    if created:
+        print(f"A new book '{instance.title}' was saved.")
