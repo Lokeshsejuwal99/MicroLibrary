@@ -5,6 +5,7 @@ from decouple import config
 
 def BookProducer(book):
     print("BookProducer")
+    print(book)
     amqp_url = config("RABBITMQ")  # Use your environment variable for the AMQP URL
 
     connection = pika.BlockingConnection(pika.URLParameters(amqp_url))
