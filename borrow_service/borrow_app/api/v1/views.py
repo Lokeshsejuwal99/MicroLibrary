@@ -22,9 +22,9 @@ class BorrowBookView(ModelViewSet):
     def create(self, request, *args, **kwargs):
         try:
             data = BorrowRepository.create(self.serializer_class, request.data)
-            BookProducer(
-                request.data["book_id"]
-            )  # Publish the book request to the RabbitMQ
+            # BookProducer(
+            #     request.data["book_id"]
+            # )  # Publish the book request to the RabbitMQ
             return Response(
                 {
                     "success": True,
